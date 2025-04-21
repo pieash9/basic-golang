@@ -2,21 +2,21 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"sync"
 )
 
-func task(id int) {
+func task(id int, w *sync.WaitGroup) { // received pointer (memory location)
+	defer w.Done()
 	fmt.Println("Doing task", id)
 }
 
 func main() {
-	for i := 0; i <= 10; i++ {
-		// go task(i)
+	var wg sync.WaitGroup
 
-		go func(i int) {
-			fmt.Println(i)
-		}(i)
+	for i := 0; i <= 10; i++ {
+		wg.Add(1)
+		go task(i, &wg)
 	}
 
-	time.Sleep(time.Second * 2)
+	wg.Wait()
 }
