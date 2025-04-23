@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/pieash9/basic-golang/students-api/internal/config"
+	"github.com/pieash9/basic-golang/students-api/internal/http/handlers/student"
 )
 
 func main() {
@@ -22,9 +23,7 @@ func main() {
 	// setup router
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to Students API live"))
-	})
+	router.HandleFunc("POST /api/student", student.New())
 
 	// setup server
 	server := http.Server{
