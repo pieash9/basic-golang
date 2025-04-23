@@ -9,7 +9,7 @@ import (
 )
 
 type HTTPServer struct {
-	Addr string
+	Addr string `yaml:"address" env-required:"true"`
 }
 
 // env-default:"production"
@@ -23,16 +23,16 @@ type Config struct {
 func MustLoad() *Config {
 	var configPath string
 
-	configPath = os.Getenv(("CONFIG_PATH"))
+	configPath = os.Getenv("CONFIG_PATH")
 
 	if configPath == "" {
-		flags := flag.String("config", "", "path to config file")
+		flags := flag.String("config", "", "path to the configuration file")
 		flag.Parse()
 
 		configPath = *flags
 
 		if configPath == "" {
-			log.Fatal("Config path is not set!")
+			log.Fatal("Config path is not set")
 		}
 	}
 
@@ -43,9 +43,8 @@ func MustLoad() *Config {
 	var cfg Config
 
 	err := cleanenv.ReadConfig(configPath, &cfg)
-
 	if err != nil {
-		log.Fatalf("error reading config file: %s", err.Error())
+		log.Fatalf("can not read config file: %s", err.Error())
 	}
 
 	return &cfg
