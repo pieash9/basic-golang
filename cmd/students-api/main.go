@@ -38,11 +38,11 @@ func main() {
 
 	// setup server
 	server := http.Server{
-		Addr:    cfg.Addr,
+		Addr:    cfg.HTTPServer.Addr,
 		Handler: router,
 	}
 
-	slog.Info("Server started on", slog.String("address", cfg.Addr))
+	slog.Info("Server started on", slog.String("address", cfg.HTTPServer.Addr))
 
 	done := make(chan os.Signal, 1)
 
