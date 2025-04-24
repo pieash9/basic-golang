@@ -118,3 +118,24 @@ func (s *Sqlite) GetStudents() ([]types.Student, error) {
 
 	return students, nil
 }
+
+func (s *Sqlite) DeleteAStudent(id int64) (types.Student, error) {
+	student, err := s.GetStudentById(id)
+	if err != nil {
+		return types.Student{}, err
+	}
+
+	stmt, err := s.Db.Prepare("DELETE FROM student where id = ?")
+	if err != nil {
+		return types.Student{}, err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return types.Student{}, err
+	}
+
+	return student, nil
+}
